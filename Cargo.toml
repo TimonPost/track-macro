@@ -1,0 +1,16 @@
+[package]
+name = "track-macro"
+version = "0.0.0"
+authors = ["Timon Post <timonpost@hotmail.nl>"]
+edition = "2018"
+description = "A macro to track data changes."
+keywords = ["track", "monitor", "modification", "change", "trace"]
+exclude = ["target", "Cargo.lock"]
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[lib]
+proc-macro = true
