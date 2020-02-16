@@ -1,0 +1,1 @@
+/home/timon/Documents/entity-sync-rs/track-macro/target/package/track-macro-0.0.0/target/debug/libtrack_macro.so: /home/timon/Documents/entity-sync-rs/track-macro/target/package/track-macro-0.0.0/src/lib.rs
