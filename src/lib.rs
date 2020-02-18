@@ -41,12 +41,8 @@ pub fn track(_attr: TokenStream, unparsed_input: TokenStream) -> TokenStream {
         #input
 
         impl Trackable<#name, #serialisation> for #name {
-            fn track<'notifier>(&mut self, sender: &'notifier Sender<ModificationEvent>) -> Tracker<'_, 'notifier, #name,  #serialisation> {
-                Tracker::new(self, sender, #serialisation, None)
-            }
-
-            fn track_by<'notifier>(&mut self, sender: &'notifier Sender<ModificationEvent>, identifier: Uuid) -> Tracker<'_, 'notifier, #name,  #serialisation> {
-                Tracker::new(self, sender, #serialisation, Some(identifier))
+            fn track<'notifier, I: Identifier>(&mut self, sender: &'notifier Sender<ModificationEvent<I>>, identifier: I) -> Tracker<'_, 'notifier, #name,  #serialisation, I> {
+                Tracker::new(self, sender, #serialisation, identifier)
             }
         }
 
