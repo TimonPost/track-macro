@@ -4,28 +4,12 @@
 ![Lines of Code][loc-badge]
 [![MIT][license-badge]][license-link] 
 
-
 # Track Macro
 
 A macro attribute that indicates a type that needs to be tracked and implements
 [Trackable](LINK) and [TrackableMarker](LINK).
 
 This attribute **should** be used with the [track](https://crates.io/crates/track) crate.  
-
-# Examples
-```rust
-#[track]
-pub struct Position1 {
-    pub x: u32,
-    pub y: u32
-}
-
-#[track(serialization = "Bincode")]
-pub struct Position2 {
-    pub x: u32,
-    pub y: u32
-}
-```
 
 [crate-badge]: https://img.shields.io/crates/v/track-macro.svg
 [crate-link]: https://crates.io/crates/track-macro
@@ -36,4 +20,4 @@ pub struct Position2 {
 [docs-badge]: https://docs.rs/track-macro/badge.svg
 [docs-link]: https://docs.rs/track-macro/
 
-[loc-badge]: https://tokei.rs/b1/github/entity-sync-rs?category=code
+[loc-badge]: https://tokei.rs/b1/github/entity-sync-rs/track-macro?category=code
