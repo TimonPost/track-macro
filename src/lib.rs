@@ -8,14 +8,40 @@ use syn::{parse_macro_input, AttributeArgs, DeriveInput, Ident};
 #[derive(Debug, FromMeta)]
 struct MacroArgs {
     #[darling(default)]
-    serialisation: Option<Ident>,
+    serialization: Option<Ident>,
 }
 
 /// A macro attribute that indicates a type that needs to be tracked and implements
-/// [Trackable](LINK) and [TrackableMarker](LINK).
+/// [Trackable](https://docs.rs/track/trait.Trackable.html) and [TrackableMarker](https://docs.rs/track/trait.TrackableMarker.html).
 ///
-/// To detect, track and test changes, the structure values must be serialized.
-/// You can add a custom serializer with the parameter `serialization`.
+/// # Examples
+///
+/// Add `track` attribute to mark your struct as trackable.
+///
+/// ```rust
+/// // imports all necessarily types for the `track` attribute.
+/// use track::preclude::*;
+///
+/// #[track]
+/// #[derive(Debug)]
+/// pub struct Position {
+///     pub x: u32,
+///     pub y: u32,
+/// }
+/// ```
+///
+/// You can specify a serialization method for the track macro.
+/// Give the name of the type that implements [SerializationStrategy](https://docs.rs/track/serialization/trait.SerializationStrategy.html), and make sure it is in scope for the macro.
+/// Such as:
+///
+/// ```rust
+/// use track::serialization::bincode::Bincode;
+///
+/// #[track(serialization = "Bincode")]
+/// struct Postition ...
+/// ```
+///
+/// For a more in-depth example checkout the [examples](https://github.com/entity-sync-rs/track/tree/master/examples) on github.
 #[proc_macro_attribute]
 pub fn track(_attr: TokenStream, unparsed_input: TokenStream) -> TokenStream {
     let attr_args = parse_macro_input!(_attr as AttributeArgs);
@@ -28,7 +54,7 @@ pub fn track(_attr: TokenStream, unparsed_input: TokenStream) -> TokenStream {
         }
     };
 
-    let serialisation = if let Some(ser) = _args.serialisation {
+    let serialization = if let Some(ser) = _args.serialization {
         ser
     } else {
         Ident::from_string("Bincode").unwrap()
@@ -40,9 +66,9 @@ pub fn track(_attr: TokenStream, unparsed_input: TokenStream) -> TokenStream {
         #[derive(Clone, SerdeDiff, Serialize, Deserialize)]
         #input
 
-        impl Trackable<#name, #serialisation> for #name {
-            fn track<'notifier, I: Identifier>(&mut self, sender: &'notifier Sender<ModificationEvent<I>>, identifier: I) -> Tracker<'_, 'notifier, #name,  #serialisation, I> {
-                Tracker::new(self, sender, #serialisation, identifier)
+        impl Trackable<#name, #serialization> for #name {
+            fn track<'notifier, I: Identifier>(&mut self, sender: &'notifier Sender<ModificationEvent<I>>, identifier: I) -> Tracker<'_, 'notifier, #name,  #serialization, I> {
+                Tracker::new(self, sender, #serialization, identifier)
             }
         }
 
